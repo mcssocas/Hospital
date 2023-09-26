@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -81,5 +82,21 @@ public class PacienteDaoImpl implements PacienteDao {
 		// TODO Auto-generated method stub
 		return jdbcTemplate.query("select * from Pacientes " + "where nombre like :nombre", 
 				new MapSqlParameterSource("nombre", "%"+ nombre+"%"), new PacienteRowMapper());
+	}
+
+
+	@Override
+	public boolean update(Paciente pac) {
+		// TODO Auto-generated method stub
+		return jdbcTemplate.update("update Pacientes set  nombre= :nombre,"
+				+ " edad= :edad where idPaciente=:idPaciente", new BeanPropertySqlParameterSource(pac)) ==1;
+	}
+
+
+	@Override
+	public boolean delete(int idPaciente) {
+		// TODO Auto-generated method stub
+		return jdbcTemplate.update("delete from Pacientes where  idPaciente=:idPaciente ",
+				new MapSqlParameterSource("idPaciente", idPaciente)) ==1;
 	}
 }
